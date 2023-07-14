@@ -37,6 +37,8 @@ export default class UserService {
   }
  
   async getUser(id: string): Promise<any> {
+    console.log("here");;
+    try{
     const user = await this.docClient
       .get({
         TableName: this.Tablename,
@@ -45,13 +47,13 @@ export default class UserService {
         },
       })
       .promise();
-    if (!user.Item) {
-      throw new Error("Id does not exit");
-    }
     return user.Item as User;
+  }catch(e){
+    throw new Error(e.message);
+  }
   }
   async getUsersByIds(ids: string[]): Promise<User[]> {
-    const users = await this.docClient
+   try{ const users = await this.docClient
       .batchGet({
         RequestItems: {
           UsersTable: {
@@ -60,10 +62,14 @@ export default class UserService {
         },
       })
       .promise();
-    return users.Responses.UsersTable as User[];
+    return users.Responses.UsersTable as User[];}
+    catch(e){
+      throw new Error(e.message);
+    
+    }
   
   }
-  async updateUser(id: string, user: Partial<User>): Promise<User> {
+  async updateUser(id: string, user:Partial<User>): Promise<User> {
     const updateExpressionParts = [];
     const expressionAttributeValues = {};
   
