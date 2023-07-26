@@ -1,18 +1,10 @@
 import { DocumentClient } from "aws-sdk/clients/dynamodb";
 import { User } from "../model/User";
-
 export default class UserService {
   private Tablename: string = "UsersTable";
 
   constructor(private docClient: DocumentClient) {}
-  async getAllUsers(): Promise<User[]> {
-    const users = await this.docClient
-      .scan({
-        TableName: this.Tablename,
-      })
-      .promise();
-    return users.Items as User[];
-  }
+
   async createUser(user: User): Promise<User> {
     await this.docClient
       .put({

@@ -9,6 +9,7 @@ export const getAllUsers = async (): Promise<APIGatewayProxyResult> => {
 
     try {
         const users = await userService.getAllUsers();
+        console.log(users)
         return formatJSONResponse ({
             statusCode:200,
             users
